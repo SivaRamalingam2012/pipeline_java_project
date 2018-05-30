@@ -1,21 +1,28 @@
-pipeline {
-    agent any
-    stages {
-       stage('unit tests') {
-          steps {
-            sh 'ant -f test.xml -v'
-            junit 'reports/result.xml'
-          }
+pipeline  {
+   agent any
+   
+   options {
+     buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '1' ))
+   }
+   stages {
+     stage('unit Tests') {
+      steps {
+        sh 'ant -f test.xml -v'
+        junit 'reports/result.xml'
        }
-      stage('build') {
+     }
+
+    stage('build') {
        steps {
-         sh 'ant -f build.xml -v'
-            }
-          }
-        }
-     post {
-       always {
-        archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
+       sh 'ant -f build.xml -v'
        }
+      }
+    }
+
+  post {
+    always {
+     archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
     }
   }
+}
+
