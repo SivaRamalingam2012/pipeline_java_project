@@ -23,4 +23,5 @@ public class RectangleTest {
   public void testWidth() {
     assertEquals(myRectangle.width, 6);
   }
+}
 
